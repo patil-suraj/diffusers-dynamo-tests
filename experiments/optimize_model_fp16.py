@@ -23,13 +23,13 @@ def main():
     model = torch.compile(model)
 
     # Generate random input
-    text_embeddings = torch.randn(args.batch_size, 77, 768).to(device)
-    latents = torch.randn(args.batch_size, 4, 64, 64).to(device)
+    text_embeddings = torch.randn(args.batch_size, 77, 768).to(device, dtype=torch.float16)
+    latents = torch.randn(args.batch_size, 4, 64, 64).to(device, dtype=torch.float16)
     timestep = 100
 
     start_time = time.time()
     for step in range(args.num_steps):
-        model(text_embeddings, latents, timestep)
+        model(latents, timestep, encoder_hidden_states=text_embeddings)
         if step == 0:
             first_step_time = time.time() - start_time
     

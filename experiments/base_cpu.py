@@ -24,7 +24,7 @@ def main():
 
     start_time = time.time()
     for step in range(args.num_steps):
-        model(text_embeddings, latents, timestep)
+        model(latents, timestep, encoder_hidden_states=text_embeddings)
         if step == 0:
             first_step_time = time.time() - start_time
     

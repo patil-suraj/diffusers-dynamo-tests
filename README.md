@@ -7,6 +7,8 @@ This folder contains quick reproducers to observe different behaviors. The base 
 
 We measure total time here since in diffusion inference we usually to multiple forward passes of the same model.
 
+*For the optimized model the total time is measured after a warmup step.*
+
 Batch size 4, steps 4:
 
 | Script | Toal time |

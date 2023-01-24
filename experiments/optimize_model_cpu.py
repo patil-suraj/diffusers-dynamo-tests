@@ -8,7 +8,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Mesaure inference time of the unet model")
     parser.add_argument("--model_name", type=str, default="CompVis/stable-diffusion-v1-4")
     parser.add_argument("--batch_size", type=int, default=8)
-    parser.add_argument("--num_steps", type=int, default=25)
+    parser.add_argument("--num_steps", type=int, default=4)
 
     args = parser.parse_args()
     return args

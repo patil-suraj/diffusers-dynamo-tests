@@ -36,7 +36,7 @@ def main():
     
     print("inference finished.")
     print(f"First iteration took: {first_step_time:.2f}s")
-    print(f"Total inference time after first iteration: {total_inference_time * 1000:.2f}ms")
+    print(f"Total inference time after first iteration: {total_inference_time:.2f}s")
 
 
 if __name__ == "__main__":

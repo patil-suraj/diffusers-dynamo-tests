@@ -35,6 +35,7 @@ def main():
     avg_iteration_time = (total_inference_time - first_step_time) / (args.num_steps - 1)
     print("inference finished.")
     print(f"First iteration took: {first_step_time:.2f}s")
+    print(f"Total inference time: {total_inference_time:.2f}s")
     print(f"Average time after the first iteration: {avg_iteration_time * 1000:.2f}ms")
 
 

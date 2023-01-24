@@ -24,17 +24,22 @@ def main():
     latents = torch.randn(args.batch_size, 4, 64, 64)
     timestep = 100
 
+    # Warmup
+    start_time = time.time()
+    model(latents, timestep, encoder_hidden_states=text_embeddings)
+    first_step_time = time.time() - start_time
+
+
     start_time = time.time()
     for step in range(args.num_steps):
         model(latents, timestep, encoder_hidden_states=text_embeddings)
-        if step == 0:
-            first_step_time = time.time() - start_time
     
     total_inference_time = time.time() - start_time
-    avg_iteration_time = (total_inference_time - first_step_time) / (args.num_steps - 1)
+    avg_iteration_time = total_inference_time / args.num_steps
     print("inference finished.")
     print(f"First iteration took: {first_step_time:.2f}s")
-    print(f"Average time after the first iteration: {avg_iteration_time * 1000:.2f}ms")
+    print(f"Total inference time: {total_inference_time:.2f}s")
+    print(f"Average time per step: {avg_iteration_time * 1000:.2f}ms")
 
 
 if __name__ == "__main__":

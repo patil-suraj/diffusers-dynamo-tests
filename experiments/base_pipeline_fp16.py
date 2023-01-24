@@ -2,7 +2,7 @@ import argparse
 import time
 
 import torch
-from diffusers import UNet2DConditionModel
+from diffusers import StableDiffusionPipeline
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Mesaure inference time of the unet model")
@@ -15,27 +15,26 @@ def parse_args():
 
 def main():
     args = parse_args()
-    model = UNet2DConditionModel.from_pretrained(args.model_name, subfolder="unet", torch_dtype=torch.float16)
+    pipe = StableDiffusionPipeline.from_pretrained(args.model_name, torch_dtype=torch.float16)
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = model.to(device)
+    pipe = pipe.to(device)
 
     # Generate random input
-    text_embeddings = torch.randn(args.batch_size, 77, 768).to(device, dtype=torch.float16)
-    latents = torch.randn(args.batch_size, 4, 64, 64).to(device, dtype=torch.float16)
-    timestep = 100
+    prompt = "A photo of an astronaut riding a horse."
+
+    # Warmup
+    start_time = time.time()
+    pipe(prompt, num_timesteps=1, num_images_per_prompt=args.batch_size)
+    first_step_time = time.time() - start_time
 
     start_time = time.time()
-    for step in range(args.num_steps):
-        model(latents, timestep, encoder_hidden_states=text_embeddings)
-        if step == 0:
-            first_step_time = time.time() - start_time
-    
+    pipe(prompt, num_timesteps=args.num_steps, num_images_per_prompt=args.batch_size)
     total_inference_time = time.time() - start_time
-    avg_iteration_time = (total_inference_time - first_step_time) / (args.num_steps - 1)
+    
     print("inference finished.")
     print(f"First iteration took: {first_step_time:.2f}s")
-    print(f"Average time after the first iteration: {avg_iteration_time * 1000:.2f}ms")
+    print(f"Total_inference_time after first iteration: {total_inference_time * 1000:.2f}ms")
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ import torch
 from diffusers import UNet2DConditionModel
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Finetune a transformers model on a tiny corpus for masked LM")
+    parser = argparse.ArgumentParser(description="Mesaure inference time of the unet model")
     parser.add_argument("--model_name", type=str, default="CompVis/stable-diffusion-v1-4")
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--num_steps", type=int, default=25)
